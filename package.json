@@ -1,0 +1,29 @@
+{
+  "name": "reasonmlba.github.io",
+  "version": "1.0.0",
+  "description": "ReasonML BA website",
+  "main": "index.js",
+  "scripts": {
+    "build": "bsb -make-world",
+    "start": "bsb -make-world -w",
+    "clean": "bsb -clean-world",
+    "bundle": "parcel --open src/index.html",
+    "build:website": "parcel build src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reasonmlba/reasonmlba.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reasonmlba/reasonmlba.github.io/issues"
+  },
+  "homepage": "https://github.com/reasonmlba/reasonmlba.github.io#readme",
+  "dependencies": {
+    "bs-nice": "^0.1.6",
+    "bs-platform": "^2.2.1",
+    "bs-webapi": "^0.8.3",
+    "parcel-bundler": "^1.6.2"
+  }
+}
