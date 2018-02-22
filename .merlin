@@ -8,8 +8,10 @@ S /Users/lpalmes/Developer/projects/reasonmlba/reasonmlba.github.io/node_modules
 B /Users/lpalmes/Developer/projects/reasonmlba/reasonmlba.github.io/node_modules/bs-webapi/lib/ocaml
 S /Users/lpalmes/Developer/projects/reasonmlba/reasonmlba.github.io/node_modules/bs-nice/lib/ocaml
 B /Users/lpalmes/Developer/projects/reasonmlba/reasonmlba.github.io/node_modules/bs-nice/lib/ocaml
+S rereact/src
+B lib/bs/rereact/src
+S rereact/src/rereact
+B lib/bs/rereact/src/rereact
 S src
 B lib/bs/src
-S src/rereact
-B lib/bs/src/rereact
 ####BSB GENERATED: NO EDIT}

@@ -5,6 +5,10 @@
     {
       "dir": "src",
       "subdirs": true
+    },
+    {
+      "dir": "rereact",
+      "subdirs": true
     }
   ],
   "package-specs": {

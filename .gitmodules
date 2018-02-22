@@ -1,0 +1,3 @@
+[submodule "rereact"]
+	path = rereact
+	url = git@github.com:lpalmes/rereact.git
