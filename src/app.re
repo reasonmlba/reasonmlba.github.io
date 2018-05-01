@@ -11,7 +11,7 @@ let createElement = (~children as _, _) =>
     didMount: _self => (),
     reducer: (_, _) => Rereact.NoUpdate,
     render: (_) =>
-      <Box width=(Percent(100.)) height=(Percent(100.)) backgroundColor=Whitesmoke>
+      <Box width=(Percent(100.)) backgroundColor=Whitesmoke>
         <Box
           element="section"
           paddingTop=(Px(60))
@@ -20,24 +20,30 @@ let createElement = (~children as _, _) =>
           flexDirection=Column
           alignItems=Center>
           <Box element="img" src=cover width=(Percent(70.)) />
-          <Box
-            element="button"
-            className="Button Button--primary"
-            marginTop=(Px(30))
-            marginBottom=(Px(30))>
-            (Rereact.stringToElement("Sumate a nuestra meetup"))
-          </Box>
+          <a href="https://www.meetup.com/ReasonML-BA/">
+            <Box
+              element="button"
+              className="Button Button--primary"
+              fontFamily="Montserrat"
+              fontWeight=Bold
+              marginTop=(Px(30))
+              marginBottom=(Px(30))>
+              (Rereact.string("Sumate a nuestra meetup"))
+            </Box>
+          </a>
         </Box>
+        <Box backgroundColor=Yellow> (Rereact.string("Helllo")) </Box>
         <Box
           element="section"
-          padding=(Px(60))
+          paddingTop=(Px(30))
+          paddingBottom=(Px(30))
           display=Flex
           flexDirection=Column
           alignItems=Center
           backgroundColor=White>
           <p>
             (
-              Rereact.stringToElement(
+              Rereact.string(
                 {|
                   ReasonML BA es una meetup en Buenos Aires.
                   Nuestras meetups estan relacionadas a React, Javascript y Programacion Funcional.
@@ -47,5 +53,6 @@ let createElement = (~children as _, _) =>
             )
           </p>
         </Box>
+        <Test />
       </Box>
   });

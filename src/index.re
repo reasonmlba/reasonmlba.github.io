@@ -1,1 +1,1 @@
-RereactDom.render(<App />, "container");
+RereactDom.render(<SimpleTest />, "container");
