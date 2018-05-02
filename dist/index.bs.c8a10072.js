@@ -77,7 +77,19 @@ parcelRequire = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({15:[function(require,module,exports) {
+})({14:[function(require,module,exports) {
+'use strict';
+
+
+function __(tag, block) {
+  block.tag = tag;
+  return block;
+}
+
+exports.__ = __;
+/* No side effect */
+
+},{}],22:[function(require,module,exports) {
 'use strict';
 
 
@@ -179,7 +191,7 @@ exports.assert_failure = assert_failure;
 exports.undefined_recursive_module = undefined_recursive_module;
 /*  Not a pure module */
 
-},{}],22:[function(require,module,exports) {
+},{}],23:[function(require,module,exports) {
 'use strict';
 
 var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
@@ -295,7 +307,7 @@ exports.caml_array_get = caml_array_get;
 exports.caml_array_set = caml_array_set;
 /* No side effect */
 
-},{"./caml_builtin_exceptions.js":15}],11:[function(require,module,exports) {
+},{"./caml_builtin_exceptions.js":22}],17:[function(require,module,exports) {
 'use strict';
 
 var Caml_array = require("./caml_array.js");
@@ -932,497 +944,7 @@ exports._8 = _8;
 exports.__8 = __8;
 /* No side effect */
 
-},{"./caml_array.js":22}],9:[function(require,module,exports) {
-'use strict';
-
-
-function __(tag, block) {
-  block.tag = tag;
-  return block;
-}
-
-exports.__ = __;
-/* No side effect */
-
-},{}],18:[function(require,module,exports) {
-'use strict';
-
-
-function caml_int_compare(x, y) {
-  if (x < y) {
-    return -1;
-  } else if (x === y) {
-    return 0;
-  } else {
-    return 1;
-  }
-}
-
-function caml_float_compare(x, y) {
-  if (x === y) {
-    return 0;
-  } else if (x < y) {
-    return -1;
-  } else if (x > y || x === x) {
-    return 1;
-  } else if (y === y) {
-    return -1;
-  } else {
-    return 0;
-  }
-}
-
-function caml_string_compare(s1, s2) {
-  if (s1 === s2) {
-    return 0;
-  } else if (s1 < s2) {
-    return -1;
-  } else {
-    return 1;
-  }
-}
-
-function caml_int_min(x, y) {
-  if (x < y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_float_min(x, y) {
-  if (x < y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_string_min(x, y) {
-  if (x < y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_nativeint_min(x, y) {
-  if (x < y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_int32_min(x, y) {
-  if (x < y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_int_max(x, y) {
-  if (x > y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_float_max(x, y) {
-  if (x > y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_string_max(x, y) {
-  if (x > y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_nativeint_max(x, y) {
-  if (x > y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_int32_max(x, y) {
-  if (x > y) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-var caml_nativeint_compare = caml_int_compare;
-
-var caml_int32_compare = caml_int_compare;
-
-exports.caml_int_compare = caml_int_compare;
-exports.caml_float_compare = caml_float_compare;
-exports.caml_nativeint_compare = caml_nativeint_compare;
-exports.caml_string_compare = caml_string_compare;
-exports.caml_int32_compare = caml_int32_compare;
-exports.caml_int_min = caml_int_min;
-exports.caml_float_min = caml_float_min;
-exports.caml_string_min = caml_string_min;
-exports.caml_nativeint_min = caml_nativeint_min;
-exports.caml_int32_min = caml_int32_min;
-exports.caml_int_max = caml_int_max;
-exports.caml_float_max = caml_float_max;
-exports.caml_string_max = caml_string_max;
-exports.caml_nativeint_max = caml_nativeint_max;
-exports.caml_int32_max = caml_int32_max;
-/* No side effect */
-
-},{}],13:[function(require,module,exports) {
-'use strict';
-
-var Block = require("./block.js");
-var Caml_primitive = require("./caml_primitive.js");
-var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
-
-function caml_obj_block(tag, size) {
-  var v = new Array(size);
-  v.tag = tag;
-  return v;
-}
-
-function caml_obj_dup(x) {
-  var len = x.length | 0;
-  var v = new Array(len);
-  for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
-    v[i] = x[i];
-  }
-  v.tag = x.tag | 0;
-  return v;
-}
-
-function caml_obj_truncate(x, new_size) {
-  var len = x.length | 0;
-  if (new_size <= 0 || new_size > len) {
-    throw [
-          Caml_builtin_exceptions.invalid_argument,
-          "Obj.truncate"
-        ];
-  } else if (len !== new_size) {
-    for(var i = new_size ,i_finish = len - 1 | 0; i <= i_finish; ++i){
-      x[i] = 0;
-    }
-    x.length = new_size;
-    return /* () */0;
-  } else {
-    return 0;
-  }
-}
-
-function caml_lazy_make_forward(x) {
-  return Block.__(250, [x]);
-}
-
-function caml_update_dummy(x, y) {
-  var len = y.length | 0;
-  for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
-    x[i] = y[i];
-  }
-  var y_tag = y.tag | 0;
-  if (y_tag !== 0) {
-    x.tag = y_tag;
-    return /* () */0;
-  } else {
-    return 0;
-  }
-}
-
-function caml_compare(_a, _b) {
-  while(true) {
-    var b = _b;
-    var a = _a;
-    if (a === b) {
-      return 0;
-    } else {
-      var a_type = typeof a;
-      var b_type = typeof b;
-      if (a_type === "string") {
-        return Caml_primitive.caml_string_compare(a, b);
-      } else {
-        var is_a_number = +(a_type === "number");
-        var is_b_number = +(b_type === "number");
-        if (is_a_number !== 0) {
-          if (is_b_number !== 0) {
-            return Caml_primitive.caml_int_compare(a, b);
-          } else {
-            return -1;
-          }
-        } else if (is_b_number !== 0) {
-          return 1;
-        } else if (a_type === "boolean" || a_type === "undefined" || a === null) {
-          var x = a;
-          var y = b;
-          if (x === y) {
-            return 0;
-          } else if (x < y) {
-            return -1;
-          } else {
-            return 1;
-          }
-        } else if (a_type === "function" || b_type === "function") {
-          throw [
-                Caml_builtin_exceptions.invalid_argument,
-                "compare: functional value"
-              ];
-        } else {
-          var tag_a = a.tag | 0;
-          var tag_b = b.tag | 0;
-          if (tag_a === 250) {
-            _a = a[0];
-            continue ;
-            
-          } else if (tag_b === 250) {
-            _b = b[0];
-            continue ;
-            
-          } else if (tag_a === 248) {
-            return Caml_primitive.caml_int_compare(a[1], b[1]);
-          } else if (tag_a === 251) {
-            throw [
-                  Caml_builtin_exceptions.invalid_argument,
-                  "equal: abstract value"
-                ];
-          } else if (tag_a !== tag_b) {
-            if (tag_a < tag_b) {
-              return -1;
-            } else {
-              return 1;
-            }
-          } else {
-            var len_a = a.length | 0;
-            var len_b = b.length | 0;
-            if (len_a === len_b) {
-              var a$1 = a;
-              var b$1 = b;
-              var _i = 0;
-              var same_length = len_a;
-              while(true) {
-                var i = _i;
-                if (i === same_length) {
-                  return 0;
-                } else {
-                  var res = caml_compare(a$1[i], b$1[i]);
-                  if (res !== 0) {
-                    return res;
-                  } else {
-                    _i = i + 1 | 0;
-                    continue ;
-                    
-                  }
-                }
-              };
-            } else if (len_a < len_b) {
-              var a$2 = a;
-              var b$2 = b;
-              var _i$1 = 0;
-              var short_length = len_a;
-              while(true) {
-                var i$1 = _i$1;
-                if (i$1 === short_length) {
-                  return -1;
-                } else {
-                  var res$1 = caml_compare(a$2[i$1], b$2[i$1]);
-                  if (res$1 !== 0) {
-                    return res$1;
-                  } else {
-                    _i$1 = i$1 + 1 | 0;
-                    continue ;
-                    
-                  }
-                }
-              };
-            } else {
-              var a$3 = a;
-              var b$3 = b;
-              var _i$2 = 0;
-              var short_length$1 = len_b;
-              while(true) {
-                var i$2 = _i$2;
-                if (i$2 === short_length$1) {
-                  return 1;
-                } else {
-                  var res$2 = caml_compare(a$3[i$2], b$3[i$2]);
-                  if (res$2 !== 0) {
-                    return res$2;
-                  } else {
-                    _i$2 = i$2 + 1 | 0;
-                    continue ;
-                    
-                  }
-                }
-              };
-            }
-          }
-        }
-      }
-    }
-  };
-}
-
-function caml_equal(_a, _b) {
-  while(true) {
-    var b = _b;
-    var a = _a;
-    if (a === b) {
-      return /* true */1;
-    } else {
-      var a_type = typeof a;
-      if (a_type === "string" || a_type === "number" || a_type === "boolean" || a_type === "undefined" || a === null) {
-        return /* false */0;
-      } else {
-        var b_type = typeof b;
-        if (a_type === "function" || b_type === "function") {
-          throw [
-                Caml_builtin_exceptions.invalid_argument,
-                "equal: functional value"
-              ];
-        } else if (b_type === "number" || b_type === "undefined" || b === null) {
-          return /* false */0;
-        } else {
-          var tag_a = a.tag | 0;
-          var tag_b = b.tag | 0;
-          if (tag_a === 250) {
-            _a = a[0];
-            continue ;
-            
-          } else if (tag_b === 250) {
-            _b = b[0];
-            continue ;
-            
-          } else if (tag_a === 248) {
-            return +(a[1] === b[1]);
-          } else if (tag_a === 251) {
-            throw [
-                  Caml_builtin_exceptions.invalid_argument,
-                  "equal: abstract value"
-                ];
-          } else if (tag_a !== tag_b) {
-            return /* false */0;
-          } else {
-            var len_a = a.length | 0;
-            var len_b = b.length | 0;
-            if (len_a === len_b) {
-              var a$1 = a;
-              var b$1 = b;
-              var _i = 0;
-              var same_length = len_a;
-              while(true) {
-                var i = _i;
-                if (i === same_length) {
-                  return /* true */1;
-                } else if (caml_equal(a$1[i], b$1[i])) {
-                  _i = i + 1 | 0;
-                  continue ;
-                  
-                } else {
-                  return /* false */0;
-                }
-              };
-            } else {
-              return /* false */0;
-            }
-          }
-        }
-      }
-    }
-  };
-}
-
-function caml_equal_null(x, y) {
-  if (y !== null) {
-    return caml_equal(x, y);
-  } else {
-    return +(x === y);
-  }
-}
-
-function caml_equal_undefined(x, y) {
-  if (y !== undefined) {
-    return caml_equal(x, y);
-  } else {
-    return +(x === y);
-  }
-}
-
-function caml_equal_nullable(x, y) {
-  if (y == null) {
-    return +(x === y);
-  } else {
-    return caml_equal(x, y);
-  }
-}
-
-function caml_notequal(a, b) {
-  return 1 - caml_equal(a, b);
-}
-
-function caml_greaterequal(a, b) {
-  return +(caml_compare(a, b) >= 0);
-}
-
-function caml_greaterthan(a, b) {
-  return +(caml_compare(a, b) > 0);
-}
-
-function caml_lessequal(a, b) {
-  return +(caml_compare(a, b) <= 0);
-}
-
-function caml_lessthan(a, b) {
-  return +(caml_compare(a, b) < 0);
-}
-
-function caml_min(x, y) {
-  if (caml_compare(x, y) <= 0) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-function caml_max(x, y) {
-  if (caml_compare(x, y) >= 0) {
-    return x;
-  } else {
-    return y;
-  }
-}
-
-exports.caml_obj_block = caml_obj_block;
-exports.caml_obj_dup = caml_obj_dup;
-exports.caml_obj_truncate = caml_obj_truncate;
-exports.caml_lazy_make_forward = caml_lazy_make_forward;
-exports.caml_update_dummy = caml_update_dummy;
-exports.caml_compare = caml_compare;
-exports.caml_equal = caml_equal;
-exports.caml_equal_null = caml_equal_null;
-exports.caml_equal_undefined = caml_equal_undefined;
-exports.caml_equal_nullable = caml_equal_nullable;
-exports.caml_notequal = caml_notequal;
-exports.caml_greaterequal = caml_greaterequal;
-exports.caml_greaterthan = caml_greaterthan;
-exports.caml_lessthan = caml_lessthan;
-exports.caml_lessequal = caml_lessequal;
-exports.caml_min = caml_min;
-exports.caml_max = caml_max;
-/* No side effect */
-
-},{"./block.js":9,"./caml_primitive.js":18,"./caml_builtin_exceptions.js":15}],30:[function(require,module,exports) {
+},{"./caml_array.js":23}],34:[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {};
@@ -1609,7 +1131,7 @@ process.chdir = function (dir) {
 process.umask = function () {
     return 0;
 };
-},{}],23:[function(require,module,exports) {
+},{}],28:[function(require,module,exports) {
 var process = require("process");
 'use strict';
 
@@ -1742,7 +1264,7 @@ exports.caml_ml_input_char = caml_ml_input_char;
 exports.caml_ml_out_channels_list = caml_ml_out_channels_list;
 /* node_std_output Not a pure module */
 
-},{"./curry.js":11,"./caml_builtin_exceptions.js":15,"process":30}],24:[function(require,module,exports) {
+},{"./curry.js":17,"./caml_builtin_exceptions.js":22,"process":34}],29:[function(require,module,exports) {
 var process = require("process");
 'use strict';
 
@@ -1844,7 +1366,7 @@ exports.caml_sys_is_directory = caml_sys_is_directory;
 exports.caml_sys_file_exists = caml_sys_file_exists;
 /* No side effect */
 
-},{"./caml_builtin_exceptions.js":15,"process":30}],21:[function(require,module,exports) {
+},{"./caml_builtin_exceptions.js":22,"process":34}],25:[function(require,module,exports) {
 'use strict';
 
 var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
@@ -1888,7 +1410,7 @@ exports.caml_nativeint_bswap = caml_nativeint_bswap;
 exports.imul = imul;
 /* imul Not a pure module */
 
-},{"./caml_builtin_exceptions.js":15}],34:[function(require,module,exports) {
+},{"./caml_builtin_exceptions.js":22}],37:[function(require,module,exports) {
 'use strict';
 
 
@@ -1921,7 +1443,146 @@ var repeat = ( (String.prototype.repeat && function (count,self){return self.rep
 exports.repeat = repeat;
 /* repeat Not a pure module */
 
-},{}],33:[function(require,module,exports) {
+},{}],27:[function(require,module,exports) {
+'use strict';
+
+
+function caml_int_compare(x, y) {
+  if (x < y) {
+    return -1;
+  } else if (x === y) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+function caml_float_compare(x, y) {
+  if (x === y) {
+    return 0;
+  } else if (x < y) {
+    return -1;
+  } else if (x > y || x === x) {
+    return 1;
+  } else if (y === y) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
+function caml_string_compare(s1, s2) {
+  if (s1 === s2) {
+    return 0;
+  } else if (s1 < s2) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
+function caml_int_min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_float_min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_string_min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_nativeint_min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_int32_min(x, y) {
+  if (x < y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_int_max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_float_max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_string_max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_nativeint_max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_int32_max(x, y) {
+  if (x > y) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+var caml_nativeint_compare = caml_int_compare;
+
+var caml_int32_compare = caml_int_compare;
+
+exports.caml_int_compare = caml_int_compare;
+exports.caml_float_compare = caml_float_compare;
+exports.caml_nativeint_compare = caml_nativeint_compare;
+exports.caml_string_compare = caml_string_compare;
+exports.caml_int32_compare = caml_int32_compare;
+exports.caml_int_min = caml_int_min;
+exports.caml_float_min = caml_float_min;
+exports.caml_string_min = caml_string_min;
+exports.caml_nativeint_min = caml_nativeint_min;
+exports.caml_int32_min = caml_int32_min;
+exports.caml_int_max = caml_int_max;
+exports.caml_float_max = caml_float_max;
+exports.caml_string_max = caml_string_max;
+exports.caml_nativeint_max = caml_nativeint_max;
+exports.caml_int32_max = caml_int32_max;
+/* No side effect */
+
+},{}],36:[function(require,module,exports) {
 'use strict';
 
 var Caml_int32 = require("./caml_int32.js");
@@ -2568,7 +2229,7 @@ exports.bits_of_float = bits_of_float;
 exports.get64 = get64;
 /* two_ptr_32_dbl Not a pure module */
 
-},{"./caml_int32.js":21,"./caml_utils.js":34,"./caml_primitive.js":18,"./caml_builtin_exceptions.js":15}],25:[function(require,module,exports) {
+},{"./caml_int32.js":25,"./caml_utils.js":37,"./caml_primitive.js":27,"./caml_builtin_exceptions.js":22}],30:[function(require,module,exports) {
 'use strict';
 
 var Curry = require("./curry.js");
@@ -3371,7 +3032,7 @@ exports.caml_int64_of_string = caml_int64_of_string;
 exports.caml_nativeint_of_string = caml_nativeint_of_string;
 /* float_of_string Not a pure module */
 
-},{"./curry.js":11,"./caml_int32.js":21,"./caml_int64.js":33,"./caml_utils.js":34,"./caml_builtin_exceptions.js":15}],20:[function(require,module,exports) {
+},{"./curry.js":17,"./caml_int32.js":25,"./caml_int64.js":36,"./caml_utils.js":37,"./caml_builtin_exceptions.js":22}],26:[function(require,module,exports) {
 'use strict';
 
 var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
@@ -3565,7 +3226,7 @@ exports.string_of_char = string_of_char;
 exports.get = get;
 /* No side effect */
 
-},{"./caml_builtin_exceptions.js":15}],26:[function(require,module,exports) {
+},{"./caml_builtin_exceptions.js":22}],31:[function(require,module,exports) {
 'use strict';
 
 
@@ -3613,7 +3274,7 @@ exports.create = create;
 exports.isCamlExceptionOrOpenVariant = isCamlExceptionOrOpenVariant;
 /* No side effect */
 
-},{}],27:[function(require,module,exports) {
+},{}],32:[function(require,module,exports) {
 'use strict';
 
 
@@ -3622,7 +3283,7 @@ var not_implemented = (function (s){ throw new Error(s)});
 exports.not_implemented = not_implemented;
 /* not_implemented Not a pure module */
 
-},{}],28:[function(require,module,exports) {
+},{}],33:[function(require,module,exports) {
 'use strict';
 
 var Block = require("./block.js");
@@ -3852,7 +3513,7 @@ exports.erase_rel = erase_rel;
 exports.concat_fmt = concat_fmt;
 /* No side effect */
 
-},{"./block.js":9}],14:[function(require,module,exports) {
+},{"./block.js":14}],20:[function(require,module,exports) {
 'use strict';
 
 var Curry = require("./curry.js");
@@ -4524,7 +4185,369 @@ exports.unsafe_really_input = unsafe_really_input;
 exports.do_at_exit = do_at_exit;
 /* No side effect */
 
-},{"./curry.js":11,"./caml_io.js":23,"./caml_sys.js":24,"./caml_format.js":25,"./caml_string.js":20,"./caml_exceptions.js":26,"./caml_missing_polyfill.js":27,"./caml_builtin_exceptions.js":15,"./camlinternalFormatBasics.js":28}],10:[function(require,module,exports) {
+},{"./curry.js":17,"./caml_io.js":28,"./caml_sys.js":29,"./caml_format.js":30,"./caml_string.js":26,"./caml_exceptions.js":31,"./caml_missing_polyfill.js":32,"./caml_builtin_exceptions.js":22,"./camlinternalFormatBasics.js":33}],69:[function(require,module,exports) {
+// Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
+'use strict';
+
+var updateQueue = [/* [] */0];
+
+var nextUnitOfWork = [/* None */0];
+
+var fiberRoot = [/* None */0];
+
+var pendingCommit = [/* None */0];
+
+var globalWorker = /* record */[/* work */function () {
+      return (/* () */0
+      );
+}];
+
+exports.updateQueue = updateQueue;
+exports.nextUnitOfWork = nextUnitOfWork;
+exports.fiberRoot = fiberRoot;
+exports.pendingCommit = pendingCommit;
+exports.globalWorker = globalWorker;
+/* No side effect */
+},{}],19:[function(require,module,exports) {
+'use strict';
+
+var Block = require("./block.js");
+var Caml_primitive = require("./caml_primitive.js");
+var Caml_builtin_exceptions = require("./caml_builtin_exceptions.js");
+
+function caml_obj_block(tag, size) {
+  var v = new Array(size);
+  v.tag = tag;
+  return v;
+}
+
+function caml_obj_dup(x) {
+  var len = x.length | 0;
+  var v = new Array(len);
+  for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
+    v[i] = x[i];
+  }
+  v.tag = x.tag | 0;
+  return v;
+}
+
+function caml_obj_truncate(x, new_size) {
+  var len = x.length | 0;
+  if (new_size <= 0 || new_size > len) {
+    throw [
+          Caml_builtin_exceptions.invalid_argument,
+          "Obj.truncate"
+        ];
+  } else if (len !== new_size) {
+    for(var i = new_size ,i_finish = len - 1 | 0; i <= i_finish; ++i){
+      x[i] = 0;
+    }
+    x.length = new_size;
+    return /* () */0;
+  } else {
+    return 0;
+  }
+}
+
+function caml_lazy_make_forward(x) {
+  return Block.__(250, [x]);
+}
+
+function caml_update_dummy(x, y) {
+  var len = y.length | 0;
+  for(var i = 0 ,i_finish = len - 1 | 0; i <= i_finish; ++i){
+    x[i] = y[i];
+  }
+  var y_tag = y.tag | 0;
+  if (y_tag !== 0) {
+    x.tag = y_tag;
+    return /* () */0;
+  } else {
+    return 0;
+  }
+}
+
+function caml_compare(_a, _b) {
+  while(true) {
+    var b = _b;
+    var a = _a;
+    if (a === b) {
+      return 0;
+    } else {
+      var a_type = typeof a;
+      var b_type = typeof b;
+      if (a_type === "string") {
+        return Caml_primitive.caml_string_compare(a, b);
+      } else {
+        var is_a_number = +(a_type === "number");
+        var is_b_number = +(b_type === "number");
+        if (is_a_number !== 0) {
+          if (is_b_number !== 0) {
+            return Caml_primitive.caml_int_compare(a, b);
+          } else {
+            return -1;
+          }
+        } else if (is_b_number !== 0) {
+          return 1;
+        } else if (a_type === "boolean" || a_type === "undefined" || a === null) {
+          var x = a;
+          var y = b;
+          if (x === y) {
+            return 0;
+          } else if (x < y) {
+            return -1;
+          } else {
+            return 1;
+          }
+        } else if (a_type === "function" || b_type === "function") {
+          throw [
+                Caml_builtin_exceptions.invalid_argument,
+                "compare: functional value"
+              ];
+        } else {
+          var tag_a = a.tag | 0;
+          var tag_b = b.tag | 0;
+          if (tag_a === 250) {
+            _a = a[0];
+            continue ;
+            
+          } else if (tag_b === 250) {
+            _b = b[0];
+            continue ;
+            
+          } else if (tag_a === 248) {
+            return Caml_primitive.caml_int_compare(a[1], b[1]);
+          } else if (tag_a === 251) {
+            throw [
+                  Caml_builtin_exceptions.invalid_argument,
+                  "equal: abstract value"
+                ];
+          } else if (tag_a !== tag_b) {
+            if (tag_a < tag_b) {
+              return -1;
+            } else {
+              return 1;
+            }
+          } else {
+            var len_a = a.length | 0;
+            var len_b = b.length | 0;
+            if (len_a === len_b) {
+              var a$1 = a;
+              var b$1 = b;
+              var _i = 0;
+              var same_length = len_a;
+              while(true) {
+                var i = _i;
+                if (i === same_length) {
+                  return 0;
+                } else {
+                  var res = caml_compare(a$1[i], b$1[i]);
+                  if (res !== 0) {
+                    return res;
+                  } else {
+                    _i = i + 1 | 0;
+                    continue ;
+                    
+                  }
+                }
+              };
+            } else if (len_a < len_b) {
+              var a$2 = a;
+              var b$2 = b;
+              var _i$1 = 0;
+              var short_length = len_a;
+              while(true) {
+                var i$1 = _i$1;
+                if (i$1 === short_length) {
+                  return -1;
+                } else {
+                  var res$1 = caml_compare(a$2[i$1], b$2[i$1]);
+                  if (res$1 !== 0) {
+                    return res$1;
+                  } else {
+                    _i$1 = i$1 + 1 | 0;
+                    continue ;
+                    
+                  }
+                }
+              };
+            } else {
+              var a$3 = a;
+              var b$3 = b;
+              var _i$2 = 0;
+              var short_length$1 = len_b;
+              while(true) {
+                var i$2 = _i$2;
+                if (i$2 === short_length$1) {
+                  return 1;
+                } else {
+                  var res$2 = caml_compare(a$3[i$2], b$3[i$2]);
+                  if (res$2 !== 0) {
+                    return res$2;
+                  } else {
+                    _i$2 = i$2 + 1 | 0;
+                    continue ;
+                    
+                  }
+                }
+              };
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
+function caml_equal(_a, _b) {
+  while(true) {
+    var b = _b;
+    var a = _a;
+    if (a === b) {
+      return /* true */1;
+    } else {
+      var a_type = typeof a;
+      if (a_type === "string" || a_type === "number" || a_type === "boolean" || a_type === "undefined" || a === null) {
+        return /* false */0;
+      } else {
+        var b_type = typeof b;
+        if (a_type === "function" || b_type === "function") {
+          throw [
+                Caml_builtin_exceptions.invalid_argument,
+                "equal: functional value"
+              ];
+        } else if (b_type === "number" || b_type === "undefined" || b === null) {
+          return /* false */0;
+        } else {
+          var tag_a = a.tag | 0;
+          var tag_b = b.tag | 0;
+          if (tag_a === 250) {
+            _a = a[0];
+            continue ;
+            
+          } else if (tag_b === 250) {
+            _b = b[0];
+            continue ;
+            
+          } else if (tag_a === 248) {
+            return +(a[1] === b[1]);
+          } else if (tag_a === 251) {
+            throw [
+                  Caml_builtin_exceptions.invalid_argument,
+                  "equal: abstract value"
+                ];
+          } else if (tag_a !== tag_b) {
+            return /* false */0;
+          } else {
+            var len_a = a.length | 0;
+            var len_b = b.length | 0;
+            if (len_a === len_b) {
+              var a$1 = a;
+              var b$1 = b;
+              var _i = 0;
+              var same_length = len_a;
+              while(true) {
+                var i = _i;
+                if (i === same_length) {
+                  return /* true */1;
+                } else if (caml_equal(a$1[i], b$1[i])) {
+                  _i = i + 1 | 0;
+                  continue ;
+                  
+                } else {
+                  return /* false */0;
+                }
+              };
+            } else {
+              return /* false */0;
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
+function caml_equal_null(x, y) {
+  if (y !== null) {
+    return caml_equal(x, y);
+  } else {
+    return +(x === y);
+  }
+}
+
+function caml_equal_undefined(x, y) {
+  if (y !== undefined) {
+    return caml_equal(x, y);
+  } else {
+    return +(x === y);
+  }
+}
+
+function caml_equal_nullable(x, y) {
+  if (y == null) {
+    return +(x === y);
+  } else {
+    return caml_equal(x, y);
+  }
+}
+
+function caml_notequal(a, b) {
+  return 1 - caml_equal(a, b);
+}
+
+function caml_greaterequal(a, b) {
+  return +(caml_compare(a, b) >= 0);
+}
+
+function caml_greaterthan(a, b) {
+  return +(caml_compare(a, b) > 0);
+}
+
+function caml_lessequal(a, b) {
+  return +(caml_compare(a, b) <= 0);
+}
+
+function caml_lessthan(a, b) {
+  return +(caml_compare(a, b) < 0);
+}
+
+function caml_min(x, y) {
+  if (caml_compare(x, y) <= 0) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+function caml_max(x, y) {
+  if (caml_compare(x, y) >= 0) {
+    return x;
+  } else {
+    return y;
+  }
+}
+
+exports.caml_obj_block = caml_obj_block;
+exports.caml_obj_dup = caml_obj_dup;
+exports.caml_obj_truncate = caml_obj_truncate;
+exports.caml_lazy_make_forward = caml_lazy_make_forward;
+exports.caml_update_dummy = caml_update_dummy;
+exports.caml_compare = caml_compare;
+exports.caml_equal = caml_equal;
+exports.caml_equal_null = caml_equal_null;
+exports.caml_equal_undefined = caml_equal_undefined;
+exports.caml_equal_nullable = caml_equal_nullable;
+exports.caml_notequal = caml_notequal;
+exports.caml_greaterequal = caml_greaterequal;
+exports.caml_greaterthan = caml_greaterthan;
+exports.caml_lessthan = caml_lessthan;
+exports.caml_lessequal = caml_lessequal;
+exports.caml_min = caml_min;
+exports.caml_max = caml_max;
+/* No side effect */
+
+},{"./block.js":14,"./caml_primitive.js":27,"./caml_builtin_exceptions.js":22}],16:[function(require,module,exports) {
 'use strict';
 
 var Curry = require("./curry.js");
@@ -6217,7 +6240,7 @@ exports.sort_uniq = sort_uniq;
 exports.merge = merge;
 /* No side effect */
 
-},{"./curry.js":11,"./caml_obj.js":13,"./pervasives.js":14,"./caml_builtin_exceptions.js":15}],31:[function(require,module,exports) {
+},{"./curry.js":17,"./caml_obj.js":19,"./pervasives.js":20,"./caml_builtin_exceptions.js":22}],35:[function(require,module,exports) {
 'use strict';
 
 var Caml_string = require("./caml_string.js");
@@ -6318,7 +6341,7 @@ exports.uppercase = uppercase;
 exports.compare = compare;
 /* No side effect */
 
-},{"./caml_string.js":20,"./caml_builtin_exceptions.js":15}],19:[function(require,module,exports) {
+},{"./caml_string.js":26,"./caml_builtin_exceptions.js":22}],24:[function(require,module,exports) {
 'use strict';
 
 var Char = require("./char.js");
@@ -6815,7 +6838,7 @@ exports.unsafe_to_string = unsafe_to_string;
 exports.unsafe_of_string = unsafe_of_string;
 /* No side effect */
 
-},{"./char.js":31,"./list.js":10,"./curry.js":11,"./caml_obj.js":13,"./caml_int32.js":21,"./caml_string.js":20,"./caml_primitive.js":18,"./caml_builtin_exceptions.js":15}],12:[function(require,module,exports) {
+},{"./char.js":35,"./list.js":16,"./curry.js":17,"./caml_obj.js":19,"./caml_int32.js":25,"./caml_string.js":26,"./caml_primitive.js":27,"./caml_builtin_exceptions.js":22}],18:[function(require,module,exports) {
 'use strict';
 
 var List = require("./list.js");
@@ -7020,9 +7043,99 @@ exports.uncapitalize = uncapitalize;
 exports.compare = compare;
 /* No side effect */
 
-},{"./list.js":10,"./bytes.js":19,"./caml_int32.js":21,"./caml_string.js":20,"./caml_primitive.js":18}],8:[function(require,module,exports) {
+},{"./list.js":16,"./bytes.js":24,"./caml_int32.js":25,"./caml_string.js":26,"./caml_primitive.js":27}],60:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
+
+var List = require("bs-platform/lib/js/list.js");
+var $$String = require("bs-platform/lib/js/string.js");
+
+function getFiberTag(fiber) {
+  var match = fiber[/* tag */0];
+  switch (match) {
+    case 0:
+      return "Host";
+    case 1:
+      return "Component";
+    case 2:
+      var match$1 = fiber[/* alternate */6];
+      if (match$1) {
+        console.log("Has alternatev");
+      } else {
+        console.log("No alternate");
+      }
+      return "Root";
+
+  }
+}
+
+function getFiberEffect(fiber) {
+  var match = fiber[/* effectTag */7];
+  if (match) {
+    switch (match[0]) {
+      case 0:
+        return "Placement";
+      case 1:
+        return "Deletion";
+      case 2:
+        return "Update";
+
+    }
+  } else {
+    return "No effect";
+  }
+}
+
+function getFiberElement(element) {
+  if (element.tag) {
+    return element[0];
+  } else {
+    var t = element[0];
+    if (typeof t === "number") {
+      return "nil";
+    } else if (t.tag) {
+      return t[0][/* debugName */0];
+    } else {
+      return "Text(" + (t[0] + ")");
+    }
+  }
+}
+
+function printEffects(effects) {
+  return List.iter(function (f) {
+    console.log(getFiberEffect(f) + (" " + getFiberElement(f[/* fiberType */1])));
+    return (/* () */0
+    );
+  }, effects);
+}
+
+function printFiber(param, spaces) {
+  var fiber = param[0];
+  var fiberTag = getFiberTag(fiber);
+  var match = fiber[/* fiberType */1];
+  var elementType;
+  if (match.tag) {
+    elementType = match[0];
+  } else {
+    var t = match[0];
+    elementType = typeof t === "number" ? "nil" : t.tag ? t[0][/* debugName */0] : "Text(" + (t[0] + ")");
+  }
+  var match$1 = fiber[/* child */4];
+  var match$2 = fiber[/* sibling */5];
+  return fiberTag + (" (" + (elementType + (")\n" + ($$String.make(spaces, /* "-" */45) + ((match$1 ? printFiber(match$1[0], spaces + 1 | 0) : "") + (match$2 ? printFiber(match$2[0], spaces + 1 | 0) : ""))))));
+}
+
+exports.getFiberTag = getFiberTag;
+exports.getFiberEffect = getFiberEffect;
+exports.getFiberElement = getFiberElement;
+exports.printEffects = printEffects;
+exports.printFiber = printFiber;
+/* No side effect */
+},{"bs-platform/lib/js/list.js":16,"bs-platform/lib/js/string.js":18}],15:[function(require,module,exports) {
+// Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
+'use strict';
+
+var Curry = require("bs-platform/lib/js/curry.js");
 
 function reconcileStringProp(domElement, prevProps, prop, attributeName) {
   if (prevProps) {
@@ -7099,7 +7212,7 @@ function reconcile(domElement, prevProps, props) {
   }
   var match$3 = props[/* onChange */8];
   if (prevProps) {
-    var match$4 = prevProps[0][/* onClick */7];
+    var match$4 = prevProps[0][/* onChange */8];
     if (match$4) {
       var prevFunc$1 = match$4[0];
       if (match$3) {
@@ -7107,6 +7220,28 @@ function reconcile(domElement, prevProps, props) {
         if (prevFunc$1 !== func$1) {
           domElement.removeEventListener("input", prevFunc$1);
           domElement.addEventListener("input", func$1);
+        }
+      } else {
+        domElement.removeEventListener("input", prevFunc$1);
+      }
+    }
+  } else if (match$3) {
+    domElement.addEventListener("input", match$3[0]);
+  }
+  var match$5 = props[/* onChangeText */9];
+  if (prevProps) {
+    var match$6 = prevProps[0][/* onChangeText */9];
+    if (match$6) {
+      var prevFunc$2 = match$6[0];
+      if (match$5) {
+        var func$2 = match$5[0];
+        if (prevFunc$2 !== func$2) {
+          domElement.removeEventListener("input", function (e) {
+            return Curry._1(prevFunc$2, e.target.value);
+          });
+          domElement.addEventListener("input", function (e) {
+            return Curry._1(func$2, e.target.value);
+          });
           return (/* () */0
           );
         } else {
@@ -7114,7 +7249,9 @@ function reconcile(domElement, prevProps, props) {
           );
         }
       } else {
-        domElement.removeEventListener("input", prevFunc$1);
+        domElement.removeEventListener("input", function (e) {
+          return Curry._1(prevFunc$2, e.target.value);
+        });
         return (/* () */0
         );
       }
@@ -7122,8 +7259,11 @@ function reconcile(domElement, prevProps, props) {
       return (/* () */0
       );
     }
-  } else if (match$3) {
-    domElement.addEventListener("input", match$3[0]);
+  } else if (match$5) {
+    var func$3 = match$5[0];
+    domElement.addEventListener("input", function (e) {
+      return Curry._1(func$3, e.target.value);
+    });
     return (/* () */0
     );
   } else {
@@ -7141,127 +7281,197 @@ var defaultProps = /* record */[
 /* src : None */0,
 /* disabled : None */0,
 /* onClick : None */0,
-/* onChange : None */0];
+/* onChange : None */0,
+/* onChangeText : None */0];
 
 exports.defaultProps = defaultProps;
 exports.reconcileStringProp = reconcileStringProp;
 exports.reconcile = reconcile;
 /* No side effect */
-},{}],4:[function(require,module,exports) {
+},{"bs-platform/lib/js/curry.js":17}],65:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
 var List = require("bs-platform/lib/js/list.js");
-var Curry = require("bs-platform/lib/js/curry.js");
-var $$String = require("bs-platform/lib/js/string.js");
 var Caml_obj = require("bs-platform/lib/js/caml_obj.js");
-var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var RereactProps = require("./rereactProps.bs.js");
-var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
+var ReconcilerGlobals = require("./reconcilerGlobals.bs.js");
 
-var updateQueue = [/* [] */0];
-
-var fiberRoot = [/* None */0];
-
-var nextUnitOfWork = [/* None */0];
-
-var pendingCommit = [/* None */0];
-
-function getFiberTag(fiber) {
-  var match = fiber[/* tag */0];
-  switch (match) {
-    case 0:
-      return "Host";
-    case 1:
-      return "Component";
-    case 2:
-      var match$1 = fiber[/* alternate */5];
-      if (match$1) {
-        console.log("Has alternatev");
+function commitDeletion(fiber, domParent) {
+  console.log("Commiting deletion");
+  var node = /* Some */[fiber];
+  var $$break = /* false */0;
+  while ($$break === /* false */0) {
+    var match = node;
+    if (match) {
+      var fiberNode = match[0];
+      var match$1 = fiberNode[0];
+      if (match$1[/* tag */0] !== 1) {
+        var sibling = match$1[/* sibling */5];
+        var match$2 = match$1[/* stateNode */8];
+        if (match$2) {
+          console.log("Fiber has stateNode, removing it");
+          domParent.removeChild(match$2[0]);
+          var internalBreak = /* false */0;
+          while (internalBreak === /* false */0) {
+            console.log("In while loop");
+            var match$3 = node;
+            if (match$3) {
+              var n = match$3[0];
+              var internalNode = n[0];
+              if (n !== fiber) {
+                internalBreak = /* true */1;
+              }
+              if (internalNode[/* sibling */5] !== /* None */0) {
+                internalBreak = /* true */1;
+              }
+              node = internalNode[/* parent */2];
+            } else {
+              internalBreak = /* true */1;
+            }
+          };
+          if (Caml_obj.caml_equal(fiberNode, fiber)) {
+            console.log("Fiber node is the same as passed, breaking loop");
+            $$break = /* true */1;
+          }
+          node = sibling;
+          console.log("Moving to sibling");
+        } else {
+          $$break = /* true */1;
+          console.log("Default case, just stop it");
+        }
       } else {
-        console.log("No alternate");
+        var child = match$1[/* child */4];
+        console.log("Fiber is component, moving into child");
+        node = child;
       }
-      return "Root";
-
-  }
-}
-
-function getFiberEffect(fiber) {
-  var match = fiber[/* effectTag */6];
-  if (match) {
-    switch (match[0]) {
-      case 0:
-        return "Placement";
-      case 1:
-        return "Deletion";
-      case 2:
-        return "Update";
-
-    }
-  } else {
-    return "No effect";
-  }
-}
-
-function getFiberElement(element) {
-  if (element.tag) {
-    return element[0];
-  } else {
-    var t = element[0];
-    if (typeof t === "number") {
-      return "nil";
-    } else if (t.tag) {
-      return t[0][/* debugName */0];
     } else {
-      return "Text(" + (t[0] + ")");
+      $$break = /* true */1;
+      console.log("Default case, just stop it");
     }
-  }
-}
-
-function printEffects(effects) {
-  return List.iter(function (f) {
-    console.log(getFiberEffect(f) + (" " + getFiberElement(f[/* fiberType */1])));
-    return (/* () */0
-    );
-  }, effects);
-}
-
-function printFiber(fiber, spaces) {
-  var fiberTag = getFiberTag(fiber);
-  var match = fiber[/* fiberType */1];
-  var elementType;
-  if (match.tag) {
-    elementType = match[0];
-  } else {
-    var t = match[0];
-    elementType = typeof t === "number" ? "nil" : t.tag ? t[0][/* debugName */0] : "Text(" + (t[0] + ")");
-  }
-  var match$1 = fiber[/* child */3];
-  var match$2 = fiber[/* sibling */4];
-  return fiberTag + (" (" + (elementType + (")\n" + ($$String.make(spaces, /* "-" */45) + ((match$1 ? Curry._2(printFiber, match$1[0], spaces + 1 | 0) : "") + (match$2 ? Curry._2(printFiber, match$2[0], spaces + 1 | 0) : ""))))));
-}
-
-var Debug = /* module */[
-/* getFiberTag */getFiberTag,
-/* getFiberEffect */getFiberEffect,
-/* getFiberElement */getFiberElement,
-/* printEffects */printEffects,
-/* printFiber */printFiber];
-
-function requestIdleCallback(f) {
-  window.requestIdleCallback(function () {
-    return Curry._1(f, /* () */0);
-  });
+  };
   return (/* () */0
   );
 }
 
-function reconcileChildrenArray(wipFiber, elements) {
+function commitWork(param) {
+  var fiber = param[0];
+  var match = fiber[/* tag */0];
+  if (match >= 2) {
+    return (/* () */0
+    );
+  } else {
+    var match$1 = fiber[/* parent */2];
+    if (match$1) {
+      var parentFiber = match$1[0][0];
+      while (parentFiber[/* tag */0] === /* Component */1) {
+        var match$2 = parentFiber[/* parent */2];
+        if (match$2) {
+          parentFiber = match$2[0][0];
+        }
+      };
+      var match$3 = parentFiber[/* stateNode */8];
+      if (match$3) {
+        var domParent = match$3[0];
+        var match$4 = fiber[/* effectTag */7];
+        if (match$4) {
+          switch (match$4[0]) {
+            case 0:
+              var match$5 = fiber[/* stateNode */8];
+              if (match$5) {
+                domParent.appendChild(match$5[0]);
+                return (/* () */0
+                );
+              } else {
+                return (/* () */0
+                );
+              }
+            case 1:
+              return commitDeletion( /* Fiber */[fiber], domParent);
+            case 2:
+              var match$6 = fiber[/* fiberType */1];
+              if (match$6.tag) {
+                var props = match$6[1];
+                var match$7 = fiber[/* alternate */6];
+                if (match$7) {
+                  var match$8 = match$7[0][0][/* fiberType */1];
+                  if (match$8.tag) {
+                    var match$9 = fiber[/* stateNode */8];
+                    if (match$9) {
+                      return RereactProps.reconcile(match$9[0], /* Some */[match$8[1]], props);
+                    } else {
+                      return (/* () */0
+                      );
+                    }
+                  } else {
+                    return (/* () */0
+                    );
+                  }
+                } else {
+                  var match$10 = fiber[/* stateNode */8];
+                  if (match$10) {
+                    return RereactProps.reconcile(match$10[0], /* None */0, props);
+                  } else {
+                    return (/* () */0
+                    );
+                  }
+                }
+              } else {
+                return (/* () */0
+                );
+              }
+              break;
+
+          }
+        } else {
+          console.log("No effect");
+          return (/* () */0
+          );
+        }
+      } else {
+        return (/* () */0
+        );
+      }
+    } else {
+      return (/* () */0
+      );
+    }
+  }
+}
+
+function commitAllWork(fiber) {
+  List.iter(commitWork, fiber[/* effects */9]);
+  ReconcilerGlobals.nextUnitOfWork[0] = /* None */0;
+  ReconcilerGlobals.pendingCommit[0] = /* None */0;
+  ReconcilerGlobals.fiberRoot[0] = /* Some */[/* Fiber */[fiber]];
+  return (/* () */0
+  );
+}
+
+exports.commitDeletion = commitDeletion;
+exports.commitWork = commitWork;
+exports.commitAllWork = commitAllWork;
+/* No side effect */
+},{"bs-platform/lib/js/list.js":16,"bs-platform/lib/js/caml_obj.js":19,"./rereactProps.bs.js":15,"./reconcilerGlobals.bs.js":69}],61:[function(require,module,exports) {
+// Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
+'use strict';
+
+var List = require("bs-platform/lib/js/list.js");
+var Block = require("bs-platform/lib/js/block.js");
+var Curry = require("bs-platform/lib/js/curry.js");
+var Pervasives = require("bs-platform/lib/js/pervasives.js");
+var RereactDebug = require("./rereactDebug.bs.js");
+var RereactProps = require("./rereactProps.bs.js");
+var ReconcilerGlobals = require("./reconcilerGlobals.bs.js");
+var Caml_builtin_exceptions = require("bs-platform/lib/js/caml_builtin_exceptions.js");
+
+function reconcileChildrenArray(param, elements) {
+  var wipFiber = param[0];
   var index = 0;
-  var match = wipFiber[/* alternate */5];
+  var match = wipFiber[/* alternate */6];
   var oldFiber;
   if (match) {
-    var child = match[0][/* child */3];
+    var child = match[0][0][/* child */4];
     oldFiber = [child];
   } else {
     oldFiber = [/* None */0];
@@ -7270,13 +7480,13 @@ function reconcileChildrenArray(wipFiber, elements) {
   console.log(Pervasives.string_of_int(List.length(elements)));
   console.log(List.fold_left(function (a, b) {
     return a + (" " + b);
-  }, "", List.map(getFiberElement, elements)));
+  }, "", List.map(RereactDebug.getFiberElement, elements)));
   while (index < List.length(elements) || oldFiber[0] !== /* None */0) {
     var prevFiber = newFiber;
     var element = index < List.length(elements) ? /* Some */[List.nth(elements, index)] : /* None */0;
     var match$1 = oldFiber[0];
     if (match$1) {
-      var oldFiber$1 = match$1[0];
+      var oldFiber$1 = match$1[0][0];
       if (element) {
         var elm = element[0];
         var match$2 = oldFiber$1[/* fiberType */1];
@@ -7309,16 +7519,17 @@ function reconcileChildrenArray(wipFiber, elements) {
             var tmp$2 = elm[0];
             tmp$1 = typeof tmp$2 === "number" || !tmp$2.tag ? /* Host */0 : /* Component */1;
           }
-          newFiber = /* Some */[/* record */[
+          newFiber = /* Some */[/* Fiber */[/* record */[
           /* tag */tmp$1,
           /* fiberType */elm,
-          /* parent : Some */[wipFiber],
+          /* parent : Some */[/* Fiber */[wipFiber]],
+          /* state : None */0,
           /* child : None */0,
           /* sibling : None */0,
-          /* alternate : Some */[oldFiber$1],
+          /* alternate : Some */[/* Fiber */[oldFiber$1]],
           /* effectTag : Some */[/* Update */2],
-          /* stateNode */oldFiber$1[/* stateNode */7],
-          /* effects : [] */0]];
+          /* stateNode */oldFiber$1[/* stateNode */8],
+          /* effects : [] */0]]];
         } else {
           var tmp$3;
           if (elm.tag) {
@@ -7327,23 +7538,26 @@ function reconcileChildrenArray(wipFiber, elements) {
             var tmp$4 = elm[0];
             tmp$3 = typeof tmp$4 === "number" || !tmp$4.tag ? /* Host */0 : /* Component */1;
           }
-          newFiber = /* Some */[/* record */[
+          newFiber = /* Some */[/* Fiber */[/* record */[
           /* tag */tmp$3,
           /* fiberType */elm,
-          /* parent : Some */[wipFiber],
+          /* parent : Some */[/* Fiber */[wipFiber]],
+          /* state : None */0,
           /* child : None */0,
           /* sibling : None */0,
           /* alternate : None */0,
           /* effectTag : Some */[/* Placement */0],
           /* stateNode : None */0,
-          /* effects : [] */0]];
-          oldFiber$1[/* effectTag */6] = /* Some */[/* Deletion */1];
-          wipFiber[/* effects */8] = Pervasives.$at(wipFiber[/* effects */8], /* :: */[oldFiber$1,
+          /* effects : [] */0]]];
+          oldFiber$1[/* effectTag */7] = /* Some */[/* Deletion */1];
+          wipFiber[/* effects */9] = Pervasives.$at(wipFiber[/* effects */9], /* :: */[
+          /* Fiber */[oldFiber$1],
           /* [] */0]);
         }
       } else {
-        oldFiber$1[/* effectTag */6] = /* Some */[/* Deletion */1];
-        wipFiber[/* effects */8] = Pervasives.$at(wipFiber[/* effects */8], /* :: */[oldFiber$1,
+        oldFiber$1[/* effectTag */7] = /* Some */[/* Deletion */1];
+        wipFiber[/* effects */9] = Pervasives.$at(wipFiber[/* effects */9], /* :: */[
+        /* Fiber */[oldFiber$1],
         /* [] */0]);
       }
     } else if (element) {
@@ -7355,29 +7569,30 @@ function reconcileChildrenArray(wipFiber, elements) {
         var tmp$6 = elm$1[0];
         tmp$5 = typeof tmp$6 === "number" || !tmp$6.tag ? /* Host */0 : /* Component */1;
       }
-      newFiber = /* Some */[/* record */[
+      newFiber = /* Some */[/* Fiber */[/* record */[
       /* tag */tmp$5,
       /* fiberType */elm$1,
-      /* parent : Some */[wipFiber],
+      /* parent : Some */[/* Fiber */[wipFiber]],
+      /* state : None */0,
       /* child : None */0,
       /* sibling : None */0,
       /* alternate : None */0,
       /* effectTag : Some */[/* Placement */0],
       /* stateNode : None */0,
-      /* effects : [] */0]];
+      /* effects : [] */0]]];
     } else {
       console.log("default case");
     }
     var match$5 = oldFiber[0];
     if (match$5) {
-      oldFiber[0] = match$5[0][/* sibling */4];
+      oldFiber[0] = match$5[0][0][/* sibling */5];
     }
     if (index) {
       if (prevFiber && element) {
-        prevFiber[0][/* sibling */4] = newFiber;
+        prevFiber[0][0][/* sibling */5] = newFiber;
       }
     } else {
-      wipFiber[/* child */3] = newFiber;
+      wipFiber[/* child */4] = newFiber;
     }
     index = index + 1 | 0;
   };
@@ -7385,28 +7600,46 @@ function reconcileChildrenArray(wipFiber, elements) {
   );
 }
 
-function createSelf(component) {
-  return (/* record */[
-    /* state */Curry._1(component[/* initialState */2], /* () */0),
-    /* reduce */function (payloadToAction, payload) {
-      var action = Curry._1(payloadToAction, payload);
-      Curry._1(component[/* reducer */4], action);
-      return (/* () */0
-      );
-    },
-    /* send */function (action) {
-      var newState = Curry._2(component[/* reducer */4], action, Curry._1(component[/* initialState */2], /* () */0));
-      if (!newState) {
-        Curry._1(component[/* initialState */2], /* () */0);
+function createSelf(f) {
+  var exit = 0;
+  var fiber = f[0];
+  var match = fiber[/* fiberType */1];
+  if (match.tag) {
+    exit = 1;
+  } else {
+    var match$1 = match[0];
+    if (typeof match$1 === "number") {
+      exit = 1;
+    } else if (match$1.tag) {
+      var component = match$1[0];
+      var match$2 = fiber[/* state */3];
+      if (match$2) {
+        var state = match$2[0];
+        return (/* record */[
+          /* state */state,
+          /* send */function (action) {
+            var newState = Curry._2(component[/* reducer */4], action, state);
+            fiber[/* state */3] = newState ? /* Some */[newState[0]] : /* Some */[state];
+            ReconcilerGlobals.updateQueue[0] = Pervasives.$at(ReconcilerGlobals.updateQueue[0], /* :: */[
+            /* Component */Block.__(1, [/* record */[/* fiber : Fiber */[fiber]]]),
+            /* [] */0]);
+            return Curry._1(ReconcilerGlobals.globalWorker[/* work */0], /* () */0);
+          }]
+        );
+      } else {
+        exit = 1;
       }
-      console.log(newState);
-      return (/* () */0
-      );
-    }]
-  );
+    } else {
+      exit = 1;
+    }
+  }
+  if (exit === 1) {
+    throw [Caml_builtin_exceptions.assert_failure, ["reconcilerBeginWork.re", 142, 9]];
+  }
 }
 
-function updateComponent(wipFiber) {
+function updateComponent(fiber) {
+  var wipFiber = fiber[0];
   var match = wipFiber[/* fiberType */1];
   if (match.tag) {
     return (/* () */0
@@ -7418,9 +7651,16 @@ function updateComponent(wipFiber) {
       );
     } else if (match$1.tag) {
       var component = match$1[0];
-      var self = createSelf(component);
+      var match$2 = wipFiber[/* alternate */6];
+      if (match$2) {
+        var state = match$2[0][0][/* state */3];
+        wipFiber[/* state */3] = state;
+      } else {
+        wipFiber[/* state */3] = /* Some */[Curry._1(component[/* initialState */2], /* () */0)];
+      }
+      var self = createSelf(fiber);
       var element = Curry._1(component[/* render */1], self);
-      return reconcileChildrenArray(wipFiber, /* :: */[element,
+      return reconcileChildrenArray( /* Fiber */[wipFiber], /* :: */[element,
       /* [] */0]);
     } else {
       return (/* () */0
@@ -7429,33 +7669,34 @@ function updateComponent(wipFiber) {
   }
 }
 
-function updateHost(wipFiber) {
+function updateHost(param) {
+  var wipFiber = param[0];
   var match = wipFiber[/* fiberType */1];
   if (match.tag) {
-    var match$1 = wipFiber[/* stateNode */7];
+    var match$1 = wipFiber[/* stateNode */8];
     if (!match$1) {
       var node = document.createElement(match[0]);
       RereactProps.reconcile(node, /* None */0, match[1]);
-      wipFiber[/* stateNode */7] = /* Some */[node];
+      wipFiber[/* stateNode */8] = /* Some */[node];
     }
-    return reconcileChildrenArray(wipFiber, match[2]);
+    return reconcileChildrenArray( /* Fiber */[wipFiber], match[2]);
   } else {
     var match$2 = match[0];
     if (typeof match$2 === "number") {
       return (/* () */0
       );
     } else if (match$2.tag) {
-      return updateComponent(wipFiber);
+      return updateComponent( /* Fiber */[wipFiber]);
     } else {
       var value = match$2[0];
-      var match$3 = wipFiber[/* stateNode */7];
+      var match$3 = wipFiber[/* stateNode */8];
       if (match$3) {
         return (/* () */0
         );
       } else {
         var node$1 = document.createTextNode(value);
         node$1.nodeValue = value;
-        wipFiber[/* stateNode */7] = /* Some */[node$1];
+        wipFiber[/* stateNode */8] = /* Some */[node$1];
         return (/* () */0
         );
       }
@@ -7463,327 +7704,236 @@ function updateHost(wipFiber) {
   }
 }
 
-function beginWork(wipFiber) {
+function beginWork(param) {
+  var wipFiber = param[0];
   var match = wipFiber[/* tag */0];
   if (match !== 1) {
-    return updateHost(wipFiber);
+    return updateHost( /* Fiber */[wipFiber]);
   } else {
-    return updateComponent(wipFiber);
+    return updateComponent( /* Fiber */[wipFiber]);
   }
 }
+
+exports.reconcileChildrenArray = reconcileChildrenArray;
+exports.createSelf = createSelf;
+exports.updateComponent = updateComponent;
+exports.updateHost = updateHost;
+exports.beginWork = beginWork;
+/* No side effect */
+},{"bs-platform/lib/js/list.js":16,"bs-platform/lib/js/block.js":14,"bs-platform/lib/js/curry.js":17,"bs-platform/lib/js/pervasives.js":20,"./rereactDebug.bs.js":60,"./rereactProps.bs.js":15,"./reconcilerGlobals.bs.js":69,"bs-platform/lib/js/caml_builtin_exceptions.js":22}],66:[function(require,module,exports) {
+// Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
+'use strict';
+
+var Pervasives = require("bs-platform/lib/js/pervasives.js");
+var ReconcilerGlobals = require("./reconcilerGlobals.bs.js");
+var ReconcilerBeginWork = require("./reconcilerBeginWork.bs.js");
 
 function completeWork(fiber) {
   var match = fiber[/* parent */2];
   if (match) {
-    var parent = match[0];
-    var childEffects = fiber[/* effects */8];
-    var match$1 = +(fiber[/* effectTag */6] !== /* None */0);
-    var fiberEffects = match$1 !== 0 ? /* :: */[fiber,
+    var parent = match[0][0];
+    var childEffects = fiber[/* effects */9];
+    var match$1 = +(fiber[/* effectTag */7] !== /* None */0);
+    var fiberEffects = match$1 !== 0 ? /* :: */[
+    /* Fiber */[fiber],
     /* [] */0] : /* [] */0;
-    var parentEffects = parent[/* effects */8];
-    parent[/* effects */8] = Pervasives.$at(parentEffects, Pervasives.$at(childEffects, fiberEffects));
+    var parentEffects = parent[/* effects */9];
+    parent[/* effects */9] = Pervasives.$at(parentEffects, Pervasives.$at(childEffects, fiberEffects));
     return (/* () */0
     );
   } else {
-    pendingCommit[0] = /* Some */[fiber];
+    ReconcilerGlobals.pendingCommit[0] = /* Some */[/* Fiber */[fiber]];
     return (/* () */0
     );
   }
 }
 
-function perfomUnitOfWork(wipFiber) {
-  beginWork(wipFiber);
-  var match = wipFiber[/* child */3];
+function perfomUnitOfWork(param) {
+  var wipFiber = param[0];
+  ReconcilerBeginWork.beginWork( /* Fiber */[wipFiber]);
+  var match = wipFiber[/* child */4];
   if (match) {
-    console.log("Child: " + getFiberElement(match[0][/* fiberType */1]));
-    return wipFiber[/* child */3];
+    return wipFiber[/* child */4];
   } else {
-    var unitOfWork = /* Some */[wipFiber];
+    var unitOfWork = /* Some */[/* Fiber */[wipFiber]];
     var returnUnitOfWork = /* None */0;
     while (unitOfWork !== /* None */0) {
       var match$1 = unitOfWork;
       if (match$1) {
-        var unit = match$1[0];
+        var unit = match$1[0][0];
         completeWork(unit);
-        var match$2 = unit[/* sibling */4];
+        var match$2 = unit[/* sibling */5];
         if (match$2) {
           unitOfWork = /* None */0;
           returnUnitOfWork = /* Some */[match$2[0]];
         } else {
           unitOfWork = unit[/* parent */2];
         }
-      } else {
-        throw [Caml_builtin_exceptions.match_failure, ["rereactDom.re", 301, 10]];
       }
     };
     return returnUnitOfWork;
   }
 }
 
+exports.completeWork = completeWork;
+exports.perfomUnitOfWork = perfomUnitOfWork;
+/* No side effect */
+},{"bs-platform/lib/js/pervasives.js":20,"./reconcilerGlobals.bs.js":69,"./reconcilerBeginWork.bs.js":61}],63:[function(require,module,exports) {
+// Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
+'use strict';
+
+var List = require("bs-platform/lib/js/list.js");
+var RereactDebug = require("./rereactDebug.bs.js");
+var ReconcilerCommit = require("./reconcilerCommit.bs.js");
+var ReconcilerWorker = require("./reconcilerWorker.bs.js");
+var ReconcilerGlobals = require("./reconcilerGlobals.bs.js");
+
+function getRoot(fiber) {
+  var node = fiber;
+  while (node[/* parent */2] !== /* None */0) {
+    var match = node[/* parent */2];
+    if (match) {
+      node = match[0][0];
+    }
+  };
+  console.log(RereactDebug.getFiberElement(node[/* fiberType */1]));
+  console.log(RereactDebug.getFiberTag(node));
+  return node;
+}
+
 function resetNextUnitOfWork() {
-  var match = updateQueue[0];
+  var match = ReconcilerGlobals.updateQueue[0];
   var update;
   if (match) {
     var data = match[1];
-    var update$1 = match[0][0];
+    var update$1 = match[0];
     if (data) {
-      updateQueue[0] = data;
+      ReconcilerGlobals.updateQueue[0] = data;
       update = /* Some */[update$1];
     } else {
-      updateQueue[0] = /* [] */0;
+      ReconcilerGlobals.updateQueue[0] = /* [] */0;
       update = /* Some */[update$1];
     }
   } else {
     update = /* None */0;
   }
   if (update) {
-    var update$2 = update[0];
-    nextUnitOfWork[0] = /* Some */[/* record */[
-    /* tag : HostRoot */2,
-    /* fiberType */update$2[/* children */2],
-    /* parent : None */0,
-    /* child : None */0,
-    /* sibling : None */0,
-    /* alternate */fiberRoot[0],
-    /* effectTag : None */0,
-    /* stateNode : Some */[update$2[/* dom */1]],
-    /* effects : [] */0]];
-    return (/* () */0
-    );
-  } else {
-    return (/* () */0
-    );
-  }
-}
-
-function commitDeletion(fiber, domParent) {
-  console.log("Commiting deletion");
-  var node = /* Some */[fiber];
-  var $$break = /* false */0;
-  while ($$break === /* false */0) {
-    var match = node;
-    if (match) {
-      var fiberNode = match[0];
-      if (fiberNode[/* tag */0] !== 1) {
-        var match$1 = fiberNode[/* stateNode */7];
-        if (match$1) {
-          console.log("Fiber has stateNode, removing it");
-          domParent.removeChild(match$1[0]);
-          var internalBreak = /* false */0;
-          while (internalBreak === /* false */0) {
-            console.log("In while loop");
-            var match$2 = node;
-            if (match$2) {
-              var n = match$2[0];
-              if (n !== fiber) {
-                internalBreak = /* true */1;
-              }
-              if (n[/* sibling */4] !== /* None */0) {
-                internalBreak = /* true */1;
-              }
-              node = n[/* parent */2];
-            } else {
-              internalBreak = /* true */1;
-            }
-          };
-          if (Caml_obj.caml_equal(fiberNode, fiber)) {
-            console.log("Fiber node is the same as passed, breaking loop");
-            $$break = /* true */1;
-          }
-          node = fiberNode[/* sibling */4];
-          console.log("Moving to sibling");
-        } else {
-          $$break = /* true */1;
-          console.log("Default case, just stop it");
-        }
-      } else {
-        var child = fiberNode[/* child */3];
-        console.log("Fiber is component, moving into child");
-        node = child;
-      }
+    var match$1 = update[0];
+    if (match$1.tag) {
+      var rootFiber = getRoot(match$1[0][/* fiber */0][0]);
+      ReconcilerGlobals.nextUnitOfWork[0] = /* Some */[/* Fiber */[/* record */[
+      /* tag : HostRoot */2,
+      /* fiberType */rootFiber[/* fiberType */1],
+      /* parent : None */0,
+      /* state */rootFiber[/* state */3],
+      /* child : None */0,
+      /* sibling : None */0,
+      /* alternate : Some */[/* Fiber */[rootFiber]],
+      /* effectTag : None */0,
+      /* stateNode */rootFiber[/* stateNode */8],
+      /* effects : [] */0]]];
+      return (/* () */0
+      );
     } else {
-      $$break = /* true */1;
-      console.log("Default case, just stop it");
-    }
-  };
-  return (/* () */0
-  );
-}
-
-function commitWork(fiber) {
-  var match = fiber[/* tag */0];
-  if (match >= 2) {
-    return (/* () */0
-    );
-  } else {
-    var match$1 = fiber[/* parent */2];
-    if (match$1) {
-      var parentFiber = match$1[0];
-      while (parentFiber[/* tag */0] === /* Component */1) {
-        var match$2 = parentFiber[/* parent */2];
-        if (match$2) {
-          parentFiber = match$2[0];
-        }
-      };
-      var match$3 = parentFiber[/* stateNode */7];
-      if (match$3) {
-        var domParent = match$3[0];
-        var match$4 = fiber[/* effectTag */6];
-        if (match$4) {
-          switch (match$4[0]) {
-            case 0:
-              var match$5 = fiber[/* stateNode */7];
-              if (match$5) {
-                domParent.appendChild(match$5[0]);
-                return (/* () */0
-                );
-              } else {
-                return (/* () */0
-                );
-              }
-            case 1:
-              return commitDeletion(fiber, domParent);
-            case 2:
-              var match$6 = fiber[/* fiberType */1];
-              if (match$6.tag) {
-                var props = match$6[1];
-                var match$7 = fiber[/* alternate */5];
-                if (match$7) {
-                  var match$8 = match$7[0][/* fiberType */1];
-                  if (match$8.tag) {
-                    var match$9 = fiber[/* stateNode */7];
-                    if (match$9) {
-                      return RereactProps.reconcile(match$9[0], /* Some */[match$8[1]], props);
-                    } else {
-                      return (/* () */0
-                      );
-                    }
-                  } else {
-                    return (/* () */0
-                    );
-                  }
-                } else {
-                  var match$10 = fiber[/* stateNode */7];
-                  if (match$10) {
-                    return RereactProps.reconcile(match$10[0], /* None */0, props);
-                  } else {
-                    return (/* () */0
-                    );
-                  }
-                }
-              } else {
-                return (/* () */0
-                );
-              }
-              break;
-
-          }
-        } else {
-          console.log("No effect");
-          return (/* () */0
-          );
-        }
-      } else {
-        return (/* () */0
-        );
-      }
-    } else {
+      var update$2 = match$1[0];
+      ReconcilerGlobals.nextUnitOfWork[0] = /* Some */[/* Fiber */[/* record */[
+      /* tag : HostRoot */2,
+      /* fiberType */update$2[/* children */1],
+      /* parent : None */0,
+      /* state : None */0,
+      /* child : None */0,
+      /* sibling : None */0,
+      /* alternate */ReconcilerGlobals.fiberRoot[0],
+      /* effectTag : None */0,
+      /* stateNode : Some */[update$2[/* dom */0]],
+      /* effects : [] */0]]];
       return (/* () */0
       );
     }
-  }
-}
-
-function commitAllWork(fiber) {
-  List.iter(commitWork, fiber[/* effects */8]);
-  nextUnitOfWork[0] = /* None */0;
-  pendingCommit[0] = /* None */0;
-  fiberRoot[0] = /* Some */[fiber];
-  return (/* () */0
-  );
-}
-
-function workLoop() {
-  var match = nextUnitOfWork[0];
-  if (!match) {
-    resetNextUnitOfWork( /* () */0);
-  }
-  while (nextUnitOfWork[0] !== /* None */0) {
-    var match$1 = nextUnitOfWork[0];
-    nextUnitOfWork[0] = match$1 ? perfomUnitOfWork(match$1[0]) : /* None */0;
-  };
-  var match$2 = pendingCommit[0];
-  if (match$2) {
-    return commitAllWork(match$2[0]);
   } else {
     return (/* () */0
     );
   }
 }
 
-function perfomWork() {
-  workLoop( /* () */0);
-  var match = nextUnitOfWork[0];
-  var moreWork = match ? /* true */1 : /* false */0;
-  if (moreWork || List.length(updateQueue[0]) > 0) {
-    return requestIdleCallback(perfomWork);
-  } else {
-    return 0;
+function workLoop() {
+  var match = ReconcilerGlobals.nextUnitOfWork[0];
+  if (!match) {
+    resetNextUnitOfWork( /* () */0);
   }
+  while (ReconcilerGlobals.nextUnitOfWork[0] !== /* None */0) {
+    var match$1 = ReconcilerGlobals.nextUnitOfWork[0];
+    ReconcilerGlobals.nextUnitOfWork[0] = match$1 ? ReconcilerWorker.perfomUnitOfWork(match$1[0]) : /* None */0;
+  };
+  var match$2 = ReconcilerGlobals.pendingCommit[0];
+  if (match$2) {
+    return ReconcilerCommit.commitAllWork(match$2[0][0]);
+  } else {
+    return (/* () */0
+    );
+  }
+}
+
+function perfomWork(_param) {
+  while (true) {
+    workLoop( /* () */0);
+    var match = ReconcilerGlobals.nextUnitOfWork[0];
+    var moreWork = match ? /* true */1 : /* false */0;
+    ReconcilerGlobals.globalWorker[/* work */0] = perfomWork;
+    if (moreWork || List.length(ReconcilerGlobals.updateQueue[0]) > 0) {
+      _param = /* () */0;
+      continue;
+    } else {
+      return 0;
+    }
+  };
+}
+
+exports.getRoot = getRoot;
+exports.resetNextUnitOfWork = resetNextUnitOfWork;
+exports.workLoop = workLoop;
+exports.perfomWork = perfomWork;
+/* No side effect */
+},{"bs-platform/lib/js/list.js":16,"./rereactDebug.bs.js":60,"./reconcilerCommit.bs.js":65,"./reconcilerWorker.bs.js":66,"./reconcilerGlobals.bs.js":69}],6:[function(require,module,exports) {
+// Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
+'use strict';
+
+var Block = require("bs-platform/lib/js/block.js");
+var Curry = require("bs-platform/lib/js/curry.js");
+var Pervasives = require("bs-platform/lib/js/pervasives.js");
+var ReconcilerGlobals = require("./reconcilerGlobals.bs.js");
+var ReconcilerScheduler = require("./reconcilerScheduler.bs.js");
+
+function requestIdleCallback(f) {
+  window.requestIdleCallback(function () {
+    return Curry._1(f, /* () */0);
+  });
+  return (/* () */0
+  );
 }
 
 var parentContainer = [document.createElement("span")];
 
 function render(reactElement, containerName) {
-  Pervasives.print_newline( /* () */0);
-  Pervasives.print_newline( /* () */0);
-  console.log("Render:");
-  var match = fiberRoot[0];
-  if (match) {
-    console.log("There is a fiber root");
-  } else {
-    console.log("Fiber root empty");
-  }
-  var match$1 = document.getElementById(containerName);
-  if (match$1 == null) {
+  var match = document.getElementById(containerName);
+  if (match == null) {
     return (/* () */0
     );
   } else {
-    updateQueue[0] = Pervasives.$at(updateQueue[0], /* :: */[
-    /* Host */[/* record */[
-    /* from : HostRoot */2,
-    /* dom */match$1,
-    /* children */reactElement]],
+    ReconcilerGlobals.updateQueue[0] = Pervasives.$at(ReconcilerGlobals.updateQueue[0], /* :: */[
+    /* HostRoot */Block.__(0, [/* record */[
+    /* dom */match,
+    /* children */reactElement]]),
     /* [] */0]);
-    perfomWork( /* () */0);
-    Pervasives.print_newline( /* () */0);
-    return Pervasives.print_newline( /* () */0);
+    return ReconcilerScheduler.perfomWork( /* () */0);
   }
 }
 
-exports.updateQueue = updateQueue;
-exports.fiberRoot = fiberRoot;
-exports.nextUnitOfWork = nextUnitOfWork;
-exports.pendingCommit = pendingCommit;
-exports.Debug = Debug;
 exports.requestIdleCallback = requestIdleCallback;
-exports.reconcileChildrenArray = reconcileChildrenArray;
-exports.createSelf = createSelf;
-exports.updateComponent = updateComponent;
-exports.updateHost = updateHost;
-exports.beginWork = beginWork;
-exports.completeWork = completeWork;
-exports.perfomUnitOfWork = perfomUnitOfWork;
-exports.resetNextUnitOfWork = resetNextUnitOfWork;
-exports.commitDeletion = commitDeletion;
-exports.commitWork = commitWork;
-exports.commitAllWork = commitAllWork;
-exports.workLoop = workLoop;
-exports.perfomWork = perfomWork;
 exports.parentContainer = parentContainer;
 exports.render = render;
 /* parentContainer Not a pure module */
-},{"bs-platform/lib/js/list.js":10,"bs-platform/lib/js/curry.js":11,"bs-platform/lib/js/string.js":12,"bs-platform/lib/js/caml_obj.js":13,"bs-platform/lib/js/pervasives.js":14,"./rereactProps.bs.js":8,"bs-platform/lib/js/caml_builtin_exceptions.js":15}],126:[function(require,module,exports) {
+},{"bs-platform/lib/js/block.js":14,"bs-platform/lib/js/curry.js":17,"bs-platform/lib/js/pervasives.js":20,"./reconcilerGlobals.bs.js":69,"./reconcilerScheduler.bs.js":63}],43:[function(require,module,exports) {
 'use strict';
 
 var Caml_exceptions = require("./caml_exceptions.js");
@@ -7840,7 +7990,7 @@ exports.raiseTypeError = raiseTypeError;
 exports.raiseUriError = raiseUriError;
 /* No side effect */
 
-},{"./caml_exceptions.js":26}],125:[function(require,module,exports) {
+},{"./caml_exceptions.js":31}],40:[function(require,module,exports) {
 'use strict';
 
 var Curry = require("./curry.js");
@@ -8274,7 +8424,7 @@ exports.stable_sort = stable_sort;
 exports.fast_sort = fast_sort;
 /* No side effect */
 
-},{"./curry.js":11,"./js_exn.js":126,"./caml_array.js":22,"./caml_exceptions.js":26,"./caml_builtin_exceptions.js":15}],175:[function(require,module,exports) {
+},{"./curry.js":17,"./js_exn.js":43,"./caml_array.js":23,"./caml_exceptions.js":31,"./caml_builtin_exceptions.js":22}],50:[function(require,module,exports) {
 'use strict';
 
 var Caml_format = require("./caml_format.js");
@@ -8329,7 +8479,7 @@ exports.to_string = to_string;
 exports.compare = compare;
 /* No side effect */
 
-},{"./caml_format.js":25,"./caml_primitive.js":18}],176:[function(require,module,exports) {
+},{"./caml_format.js":30,"./caml_primitive.js":27}],51:[function(require,module,exports) {
 'use strict';
 
 var Caml_int64 = require("./caml_int64.js");
@@ -8411,7 +8561,7 @@ exports.to_string = to_string;
 exports.compare = compare;
 /* No side effect */
 
-},{"./caml_int64.js":33,"./caml_format.js":25}],180:[function(require,module,exports) {
+},{"./caml_int64.js":36,"./caml_format.js":30}],55:[function(require,module,exports) {
 'use strict';
 
 
@@ -8580,7 +8730,7 @@ function caml_md5_string(s, start, len) {
 exports.caml_md5_string = caml_md5_string;
 /* No side effect */
 
-},{}],177:[function(require,module,exports) {
+},{}],52:[function(require,module,exports) {
 'use strict';
 
 var Char = require("./char.js");
@@ -8714,7 +8864,7 @@ exports.to_hex = to_hex;
 exports.from_hex = from_hex;
 /* No side effect */
 
-},{"./char.js":31,"./string.js":12,"./caml_md5.js":180,"./pervasives.js":14,"./caml_string.js":20,"./caml_missing_polyfill.js":27,"./caml_builtin_exceptions.js":15}],178:[function(require,module,exports) {
+},{"./char.js":35,"./string.js":18,"./caml_md5.js":55,"./pervasives.js":20,"./caml_string.js":26,"./caml_missing_polyfill.js":32,"./caml_builtin_exceptions.js":22}],53:[function(require,module,exports) {
 'use strict';
 
 var Caml_format = require("./caml_format.js");
@@ -8772,7 +8922,7 @@ exports.to_string = to_string;
 exports.compare = compare;
 /* No side effect */
 
-},{"./caml_format.js":25,"./caml_primitive.js":18}],170:[function(require,module,exports) {
+},{"./caml_format.js":30,"./caml_primitive.js":27}],45:[function(require,module,exports) {
 'use strict';
 
 var $$Array = require("./array.js");
@@ -9084,7 +9234,7 @@ exports.get_state = get_state;
 exports.set_state = set_state;
 /* No side effect */
 
-},{"./array.js":125,"./curry.js":11,"./int32.js":175,"./int64.js":176,"./digest.js":177,"./caml_sys.js":24,"./nativeint.js":178,"./caml_array.js":22,"./caml_int64.js":33,"./caml_string.js":20,"./caml_builtin_exceptions.js":15}],173:[function(require,module,exports) {
+},{"./array.js":40,"./curry.js":17,"./int32.js":50,"./int64.js":51,"./digest.js":52,"./caml_sys.js":29,"./nativeint.js":53,"./caml_array.js":23,"./caml_int64.js":36,"./caml_string.js":26,"./caml_builtin_exceptions.js":22}],48:[function(require,module,exports) {
 'use strict';
 
 
@@ -9139,7 +9289,7 @@ exports.unsafe_pop = unsafe_pop;
 exports.is_empty = is_empty;
 /* No side effect */
 
-},{}],171:[function(require,module,exports) {
+},{}],46:[function(require,module,exports) {
 'use strict';
 
 var Caml_int32 = require("./caml_int32.js");
@@ -9259,7 +9409,7 @@ exports.caml_hash_final_mix = caml_hash_final_mix;
 exports.caml_hash = caml_hash;
 /* No side effect */
 
-},{"./caml_int32.js":21,"./caml_queue.js":173,"./caml_builtin_exceptions.js":15}],179:[function(require,module,exports) {
+},{"./caml_int32.js":25,"./caml_queue.js":48,"./caml_builtin_exceptions.js":22}],54:[function(require,module,exports) {
 'use strict';
 
 var Caml_string = require("./caml_string.js");
@@ -9335,7 +9485,7 @@ exports.data_size = data_size;
 exports.total_size = total_size;
 /* No side effect */
 
-},{"./caml_string.js":20,"./caml_missing_polyfill.js":27,"./caml_builtin_exceptions.js":15}],174:[function(require,module,exports) {
+},{"./caml_string.js":26,"./caml_missing_polyfill.js":32,"./caml_builtin_exceptions.js":22}],49:[function(require,module,exports) {
 'use strict';
 
 var Marshal = require("./marshal.js");
@@ -9483,7 +9633,7 @@ exports.marshal = marshal;
 exports.unmarshal = unmarshal;
 /* No side effect */
 
-},{"./marshal.js":179,"./caml_array.js":22,"./caml_missing_polyfill.js":27,"./caml_builtin_exceptions.js":15}],172:[function(require,module,exports) {
+},{"./marshal.js":54,"./caml_array.js":23,"./caml_missing_polyfill.js":32,"./caml_builtin_exceptions.js":22}],47:[function(require,module,exports) {
 'use strict';
 
 var Obj = require("./obj.js");
@@ -9551,7 +9701,7 @@ exports.force = force;
 exports.force_val = force_val;
 /* No side effect */
 
-},{"./obj.js":174,"./curry.js":11,"./caml_exceptions.js":26}],169:[function(require,module,exports) {
+},{"./obj.js":49,"./curry.js":17,"./caml_exceptions.js":31}],44:[function(require,module,exports) {
 'use strict';
 
 var $$Array = require("./array.js");
@@ -10346,7 +10496,7 @@ exports.hash_param = hash_param;
 exports.seeded_hash_param = seeded_hash_param;
 /* No side effect */
 
-},{"./array.js":125,"./block.js":9,"./curry.js":11,"./random.js":170,"./caml_obj.js":13,"./caml_hash.js":171,"./caml_array.js":22,"./caml_primitive.js":18,"./camlinternalLazy.js":172,"./caml_missing_polyfill.js":27,"./caml_builtin_exceptions.js":15}],168:[function(require,module,exports) {
+},{"./array.js":40,"./block.js":14,"./curry.js":17,"./random.js":45,"./caml_obj.js":19,"./caml_hash.js":46,"./caml_array.js":23,"./caml_primitive.js":27,"./camlinternalLazy.js":47,"./caml_missing_polyfill.js":32,"./caml_builtin_exceptions.js":22}],41:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
@@ -11642,7 +11792,7 @@ exports.extract = extract;
 exports.rehydrate = rehydrate;
 exports.Presets = Presets;
 /* match Not a pure module */
-},{"bs-platform/lib/js/char.js":31,"bs-platform/lib/js/list.js":10,"bs-platform/lib/js/array.js":125,"bs-platform/lib/js/curry.js":11,"bs-platform/lib/js/string.js":12,"bs-platform/lib/js/hashtbl.js":169,"bs-platform/lib/js/caml_array.js":22,"bs-platform/lib/js/caml_int32.js":21,"bs-platform/lib/js/pervasives.js":14,"bs-platform/lib/js/caml_string.js":20,"bs-platform/lib/js/caml_builtin_exceptions.js":15}],6:[function(require,module,exports) {
+},{"bs-platform/lib/js/char.js":35,"bs-platform/lib/js/list.js":16,"bs-platform/lib/js/array.js":40,"bs-platform/lib/js/curry.js":17,"bs-platform/lib/js/string.js":18,"bs-platform/lib/js/hashtbl.js":44,"bs-platform/lib/js/caml_array.js":23,"bs-platform/lib/js/caml_int32.js":25,"bs-platform/lib/js/pervasives.js":20,"bs-platform/lib/js/caml_string.js":26,"bs-platform/lib/js/caml_builtin_exceptions.js":22}],10:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
@@ -11670,7 +11820,7 @@ function basicComponent(debugName) {
   return (/* record */[
     /* debugName */debugName,
     /* render */function () {
-      throw [Caml_builtin_exceptions.assert_failure, ["rereact.re", 47, 19]];
+      throw [Caml_builtin_exceptions.assert_failure, ["rereact.re", 46, 19]];
     },
     /* initialState */function () {
       return (/* () */0
@@ -11741,7 +11891,7 @@ exports.$$null = $$null;
 exports.nil = nil;
 exports.element = element;
 /* No side effect */
-},{"bs-platform/lib/js/array.js":125,"bs-platform/lib/js/block.js":9,"bs-platform/lib/js/curry.js":11,"./rereactProps.bs.js":8,"bs-platform/lib/js/caml_builtin_exceptions.js":15}],167:[function(require,module,exports) {
+},{"bs-platform/lib/js/array.js":40,"bs-platform/lib/js/block.js":14,"bs-platform/lib/js/curry.js":17,"./rereactProps.bs.js":15,"bs-platform/lib/js/caml_builtin_exceptions.js":22}],9:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
@@ -11751,7 +11901,7 @@ var $$Array = require("bs-platform/lib/js/array.js");
 var Block = require("bs-platform/lib/js/block.js");
 var Rereact = require("./rereact/rereact.bs.js");
 
-function createElement($staropt$star, id, href, value, disabled, onClick, onChange, src, className, placeholder, display, width, height, top, bottom, left, right, minWidth, maxWidth, minHeight, maxHeight, margin, marginVertical, marginHorizontal, marginTop, marginBottom, marginLeft, marginRight, padding, paddingVertical, paddingHorizontal, paddingTop, paddingBottom, paddingLeft, paddingRight, borderWidth, borderTopWidth, borderBottomWidth, borderLeftWidth, borderRightWidth, position, flexDirection, flexWrap, justifyContent, alignItems, alignSelf, alignContent, overflow, flex, flexGrow, flexShrink, flexBasisi, flexBasis, shadowColor, shadowOffset, shadowOpacity, shadowRadius, transform, backfaceVisibilty, backgroundColor, borderColor, borderTopColor, borderBottomColor, borderLeftColor, borderRightColor, borderRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius, borderTopLeftRadius, borderStyle, opacity, elevation, color, fontFamily, fontSize, fontStyle, fontWeight, fontVariant, textShadowRadius, textShadowColor, letterSpacing, lineHeight, textAlign, textAlignVertical, includeFontPadding, textDecorationLine, textDecorationColor, writingDirection, resizeMode, tintColor, overlayColor, mediaQuery, supports, select, raw, children, _) {
+function createElement($staropt$star, id, href, value, disabled, onClick, onChange, onChangeText, src, className, placeholder, display, width, height, top, bottom, left, right, minWidth, maxWidth, minHeight, maxHeight, margin, marginVertical, marginHorizontal, marginTop, marginBottom, marginLeft, marginRight, padding, paddingVertical, paddingHorizontal, paddingTop, paddingBottom, paddingLeft, paddingRight, borderWidth, borderTopWidth, borderBottomWidth, borderLeftWidth, borderRightWidth, position, flexDirection, flexWrap, justifyContent, alignItems, alignSelf, alignContent, overflow, flex, flexGrow, flexShrink, flexBasisi, flexBasis, shadowColor, shadowOffset, shadowOpacity, shadowRadius, transform, backfaceVisibilty, backgroundColor, borderColor, borderTopColor, borderBottomColor, borderLeftColor, borderRightColor, borderRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius, borderTopLeftRadius, borderStyle, opacity, elevation, color, fontFamily, fontSize, fontStyle, fontWeight, fontVariant, textShadowRadius, textShadowColor, letterSpacing, lineHeight, textAlign, textAlignVertical, includeFontPadding, textDecorationLine, textDecorationColor, writingDirection, resizeMode, tintColor, overlayColor, mediaQuery, supports, select, raw, children, _) {
   var element = $staropt$star ? $staropt$star[0] : "div";
   return Rereact.element( /* record */[
   /* debugName */"JsxNice(" + (element + ")"),
@@ -11887,7 +12037,8 @@ function createElement($staropt$star, id, href, value, disabled, onClick, onChan
       /* src */src,
       /* disabled */disabled,
       /* onClick */onClick,
-      /* onChange */onChange], children])
+      /* onChange */onChange,
+      /* onChangeText */onChangeText], children])
     );
   },
   /* initialState */function () {
@@ -11906,39 +12057,39 @@ function createElement($staropt$star, id, href, value, disabled, onClick, onChan
 
 var Box = /* module */[/* createElement */createElement];
 
-function createElement$1(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9) {
+function createElement$1(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
   var partial_arg = /* Some */[/* Inline */2];
-  return function (param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96) {
-    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, partial_arg, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96);
+  return function (param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96, param$97) {
+    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, partial_arg, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96, param$97);
   };
 }
 
 var Inline = /* module */[/* createElement */createElement$1];
 
-function createElement$2(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9) {
+function createElement$2(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
   var partial_arg = /* Some */[/* InlineBlock */3];
-  return function (param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96) {
-    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, partial_arg, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96);
+  return function (param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96, param$97) {
+    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, partial_arg, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96, param$97);
   };
 }
 
 var InlineBlock = /* module */[/* createElement */createElement$2];
 
-function createElement$3(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39) {
+function createElement$3(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40) {
   var partial_arg = /* Some */[/* Row */0];
   var partial_arg$1 = /* Some */[/* Flex */5];
-  return function (param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95) {
-    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, partial_arg$1, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, partial_arg, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95);
+  return function (param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96) {
+    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, partial_arg$1, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, partial_arg, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96);
   };
 }
 
 var Row = /* module */[/* createElement */createElement$3];
 
-function createElement$4(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39) {
+function createElement$4(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40) {
   var partial_arg = /* Some */[/* Column */2];
   var partial_arg$1 = /* Some */[/* Flex */5];
-  return function (param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95) {
-    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, partial_arg$1, param$10, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, partial_arg, param$40, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95);
+  return function (param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96) {
+    return createElement(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, partial_arg$1, param$11, param$12, param$13, param$14, param$15, param$16, param$17, param$18, param$19, param$20, param$21, param$22, param$23, param$24, param$25, param$26, param$27, param$28, param$29, param$30, param$31, param$32, param$33, param$34, param$35, param$36, param$37, param$38, param$39, param$40, partial_arg, param$41, param$42, param$43, param$44, param$45, param$46, param$47, param$48, param$49, param$50, param$51, param$52, param$53, param$54, param$55, param$56, param$57, param$58, param$59, param$60, param$61, param$62, param$63, param$64, param$65, param$66, param$67, param$68, param$69, param$70, param$71, param$72, param$73, param$74, param$75, param$76, param$77, param$78, param$79, param$80, param$81, param$82, param$83, param$84, param$85, param$86, param$87, param$88, param$89, param$90, param$91, param$92, param$93, param$94, param$95, param$96);
   };
 }
 
@@ -11950,13 +12101,13 @@ exports.InlineBlock = InlineBlock;
 exports.Row = Row;
 exports.Col = Col;
 /* Nice Not a pure module */
-},{"bs-platform/lib/js/list.js":10,"bs-nice/src/nice.js":168,"bs-platform/lib/js/array.js":125,"bs-platform/lib/js/block.js":9,"./rereact/rereact.bs.js":6}],202:[function(require,module,exports) {
+},{"bs-platform/lib/js/list.js":16,"bs-nice/src/nice.js":41,"bs-platform/lib/js/array.js":40,"bs-platform/lib/js/block.js":14,"./rereact/rereact.bs.js":10}],38:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
 var Block = require("bs-platform/lib/js/block.js");
 
-function createDomElement(name, id, href, value, disabled, onClick, onChange, className, placeholder, src, children, _) {
+function createDomElement(name, id, href, value, disabled, onClick, onChange, onChangeText, className, placeholder, src, children, _) {
   return (/* Nested */Block.__(1, [name,
     /* record */[
     /* id */id,
@@ -11967,68 +12118,69 @@ function createDomElement(name, id, href, value, disabled, onClick, onChange, cl
     /* src */src,
     /* disabled */disabled,
     /* onClick */onClick,
-    /* onChange */onChange], children])
+    /* onChange */onChange,
+    /* onChangeText */onChangeText], children])
   );
 }
 
-function div(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("div", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function div(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("div", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function h1(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("h1", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function h1(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("h1", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function h2(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("h2", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function h2(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("h2", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function h3(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("h3", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function h3(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("h3", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function h4(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("h4", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function h4(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("h4", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function h5(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("h5", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function h5(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("h5", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function h6(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("h6", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function h6(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("h6", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function span(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("span", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function span(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("span", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function ul(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("ul", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function ul(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("ul", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function li(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("li", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function li(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("li", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function img(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("img", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function img(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("img", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function button(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("button", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function button(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("button", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function input(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("input", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function input(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("input", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function p(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("p", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function p(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("p", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
-function a(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10) {
-  return createDomElement("a", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10);
+function a(param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11) {
+  return createDomElement("a", param, param$1, param$2, param$3, param$4, param$5, param$6, param$7, param$8, param$9, param$10, param$11);
 }
 
 exports.createDomElement = createDomElement;
@@ -12048,7 +12200,7 @@ exports.input = input;
 exports.p = p;
 exports.a = a;
 /* No side effect */
-},{"bs-platform/lib/js/block.js":9}],201:[function(require,module,exports) {
+},{"bs-platform/lib/js/block.js":14}],8:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
@@ -12063,18 +12215,22 @@ function createElement(_, _$1) {
   return Rereact.element( /* record */[
   /* debugName */"Test",
   /* render */function (param) {
-    var send = param[/* send */2];
-    return Jsxnice.Box[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[RereactElements.button( /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[function () {
+    var send = param[/* send */1];
+    return Jsxnice.Col[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[/* Px */Block.__(0, [32])], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0)( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[RereactElements.button( /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[function () {
       return Curry._1(send, /* Increment */0);
-    }], /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Increment"),
+    }], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Increment"),
     /* [] */0], /* () */0),
-    /* :: */[Jsxnice.Box[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[/* Px */Block.__(0, [16])], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string(Pervasives.string_of_int(param[/* state */0])),
+    /* :: */[Jsxnice.Box[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[/* Px */Block.__(0, [20])], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string(Pervasives.string_of_int(param[/* state */0])),
     /* [] */0], /* () */0),
     /* :: */[RereactElements.button( /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[function () {
       return Curry._1(send, /* Decrement */1);
-    }], /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Decrement"),
+    }], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Decrement"),
     /* [] */0], /* () */0),
-    /* [] */0]]], /* () */0);
+    /* :: */[RereactElements.div( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Hot code reloading with state"),
+    /* [] */0], /* () */0),
+    /* :: */[RereactElements.div( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Including the reducer"),
+    /* [] */0], /* () */0),
+    /* [] */0]]]]], /* () */0);
   },
   /* initialState */function () {
     return 1;
@@ -12096,7 +12252,7 @@ function createElement(_, _$1) {
 
 exports.createElement = createElement;
 /* Jsxnice Not a pure module */
-},{"bs-platform/lib/js/block.js":9,"bs-platform/lib/js/curry.js":11,"../rereact/src/jsxnice.bs.js":167,"../rereact/src/rereact/rereact.bs.js":6,"bs-platform/lib/js/pervasives.js":14,"../rereact/src/rereact/rereactElements.bs.js":202}],200:[function(require,module,exports) {
+},{"bs-platform/lib/js/block.js":14,"bs-platform/lib/js/curry.js":17,"../rereact/src/jsxnice.bs.js":9,"../rereact/src/rereact/rereact.bs.js":10,"bs-platform/lib/js/pervasives.js":20,"../rereact/src/rereact/rereactElements.bs.js":38}],4:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
@@ -12109,12 +12265,8 @@ function createElement(_, _$1) {
   return Rereact.element( /* record */[
   /* debugName */"Test",
   /* render */function () {
-    return Jsxnice.Col[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[/* Percent */Block.__(2, [100])], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0)( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[1], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Test.createElement( /* [] */0, /* () */0),
-    /* :: */[Jsxnice.Box[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[1], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[/* Green */54], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Helloa friend"),
-    /* [] */0], /* () */0),
-    /* :: */[Jsxnice.Box[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[1], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[/* Blue */10], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Rereact.string("Helloa friend"),
-    /* [] */0], /* () */0),
-    /* [] */0]]], /* () */0);
+    return Jsxnice.Col[/* createElement */0]( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[/* Percent */Block.__(2, [100])], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0)( /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* Some */[1], /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* None */0, /* :: */[Test.createElement( /* [] */0, /* () */0),
+    /* [] */0], /* () */0);
   },
   /* initialState */function () {
     return (/* true */1
@@ -12132,7 +12284,7 @@ function createElement(_, _$1) {
 
 exports.createElement = createElement;
 /* Test Not a pure module */
-},{"./test.bs.js":201,"bs-platform/lib/js/block.js":9,"../rereact/src/jsxnice.bs.js":167,"../rereact/src/rereact/rereact.bs.js":6}],2:[function(require,module,exports) {
+},{"./test.bs.js":8,"bs-platform/lib/js/block.js":14,"../rereact/src/jsxnice.bs.js":9,"../rereact/src/rereact/rereact.bs.js":10}],2:[function(require,module,exports) {
 // Generated by BUCKLESCRIPT VERSION 2.2.0, PLEASE EDIT WITH CARE
 'use strict';
 
@@ -12142,7 +12294,7 @@ var SimpleTest = require("./simpleTest.bs.js");
 RereactDom.render(SimpleTest.createElement( /* [] */0, /* () */0), "container");
 
 /*  Not a pure module */
-},{"../rereact/src/rereact/rereactDom.bs.js":4,"./simpleTest.bs.js":200}],199:[function(require,module,exports) {
+},{"../rereact/src/rereact/rereactDom.bs.js":6,"./simpleTest.bs.js":4}],90:[function(require,module,exports) {
 
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -12172,7 +12324,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '49379' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '58223' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -12311,5 +12463,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[199,2])
+},{}]},{},[90,2])
 //# sourceMappingURL=/index.bs.c8a10072.map
